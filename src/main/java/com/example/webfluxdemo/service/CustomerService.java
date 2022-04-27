@@ -10,7 +10,7 @@ import java.util.List;
 @Service
 public class CustomerService {
 
-    private CustomerDao customerDao;
+    private final CustomerDao customerDao;
 
     public CustomerService(CustomerDao customerDao) {
         this.customerDao = customerDao;
