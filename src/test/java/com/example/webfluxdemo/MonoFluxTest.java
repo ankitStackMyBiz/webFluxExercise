@@ -64,10 +64,17 @@ public class MonoFluxTest {
                 .expectNext("WebFluxxxxx")
                 .verifyComplete();
     }
+    @Test
+    public void monoExpectError() {
+        Mono<String> stringMono = Mono.error(new RuntimeException("Exception mono"));
+        StepVerifier.create(stringMono)
+                .expectError(RuntimeException.class)
+                .verify();
+    }
 
     @Test
     @DisplayName("Should pass if expectNext is passed in order of insertion")
-    public void fluxVerifier(){
+    public void fluxVerifier() {
         Flux<String> stringFlux = Flux.just("Apple", "Ball", "Cat", "Dog").log();
         StepVerifier.create(stringFlux)
                 .expectNext("Apple")
@@ -79,7 +86,7 @@ public class MonoFluxTest {
 
     @Test
     @DisplayName("Should pass if expectNext is passed in order of insertion")
-    public void fluxVerifierError(){
+    public void fluxVerifierError() {
         Flux<String> stringFlux = Flux.just("Apple", "Ball", "Cat", "Dog").log();
         StepVerifier.create(stringFlux)
                 .expectNext("Apple")
@@ -89,4 +96,40 @@ public class MonoFluxTest {
                 .verifyComplete();
     }
 
+    @Test
+    @DisplayName("Should pass and error will be caught on onError()")
+    public void fluxVerifierExpectError() {
+        Flux<String> stringFlux = Flux.just("Apple", "Ball", "Cat", "Dog")
+                .concatWith(Flux.error(new RuntimeException("Exception occured")))
+                .concatWithValues("Horse").log();
+        StepVerifier.create(stringFlux)
+                .expectNext("Apple")
+                .expectNext("Ball")
+                .expectNext("Cat")
+                .expectNext("Dog")
+                .expectError(RuntimeException.class)
+                .verify();
+    }
+
+    @Test
+    @DisplayName("Should pass and error will be caught on onError() with error message")
+    public void fluxVerifierExpectErrorMessage() {
+        Flux<String> stringFlux = Flux.just("Apple", "Ball", "Cat", "Dog")
+                .concatWith(Flux.error(new RuntimeException("Exception occured"))).log();
+        StepVerifier.create(stringFlux)
+                .expectNext("Apple", "Ball", "Cat", "Dog")
+                .expectErrorMessage("Exception occured")
+                .verify();
+    }
+
+    @Test
+    @DisplayName("Should fail if different error message is expected")
+    public void fluxVerifierExpectErrorMessageWithDifferentMessage() {
+        Flux<String> stringFlux = Flux.just("Apple", "Ball", "Cat", "Dog")
+                .concatWith(Flux.error(new RuntimeException("Exception occured"))).log();
+        StepVerifier.create(stringFlux)
+                .expectNext("Apple", "Ball", "Cat", "Dog")
+                .expectErrorMessage("No exception")
+                .verify();
+    }
 }
