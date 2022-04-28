@@ -1,7 +1,7 @@
-package com.example.webfluxdemo.controller;
+package com.example.webfluxdemo.basic.controller;
 
-import com.example.webfluxdemo.dto.CustomerDto;
-import com.example.webfluxdemo.service.CustomerService;
+import com.example.webfluxdemo.basic.dto.CustomerDto;
+import com.example.webfluxdemo.basic.service.CustomerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
