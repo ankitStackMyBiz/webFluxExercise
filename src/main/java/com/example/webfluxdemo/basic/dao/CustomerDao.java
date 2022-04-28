@@ -1,6 +1,6 @@
-package com.example.webfluxdemo.dao;
+package com.example.webfluxdemo.basic.dao;
 
-import com.example.webfluxdemo.dto.CustomerDto;
+import com.example.webfluxdemo.basic.dto.CustomerDto;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 

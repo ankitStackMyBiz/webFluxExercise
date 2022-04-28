@@ -1,4 +1,4 @@
-package com.example.webfluxdemo.dto;
+package com.example.webfluxdemo.basic.dto;
 
 import lombok.*;
 
